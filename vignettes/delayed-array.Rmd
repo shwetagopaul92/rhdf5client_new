@@ -1,0 +1,41 @@
+---
+title: "HSDSArray -- DelayedArray backend for Remote HDF5"
+author: "Samuela Pollack"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{HSDSArray DelayedArray backend}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+```{r setup,echo=FALSE,results="hide"}
+suppressPackageStartupMessages({
+suppressMessages({
+library(rhdf5client)
+library(DelayedArray)
+})
+})
+```
+# Using the DelayedArray infrastructure
+
+A remote dataset is accessed by giving the URL of the server, the
+type of the server (At present the only valid value is `hsds`.), the file domain (path 
+to the HDF5 file) and the full path to the dataset inside the HDF5 file. 
+
+## Interface to HSDS (HDF Object Store)
+```{r lkdela3}
+da <- HSDSArray('http://hsdshdflab.hdfgroup.org', 'hsds', 
+      '/shared/bioconductor/tenx_full.h5', '/newassay001')
+da
+```
+
+Again we have DelayedArray capabilities.
+```{r lkdel3}
+apply(da[,1:4],2,sum)
+```
